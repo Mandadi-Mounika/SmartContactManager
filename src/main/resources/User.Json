@@ -1,0 +1,8 @@
+{
+    "id" : 1001,
+    "about" : "developer" ,
+    "email" : "ABC@gmail.comn",
+    "enabled" : "true" ,
+    "image_url" : "ABC" ,
+    "name" : "John"
+}
