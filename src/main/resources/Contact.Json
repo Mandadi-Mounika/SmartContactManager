@@ -1,8 +1,10 @@
 {
-    "id" : 1001,
-    "about" : "developer" ,
+    "c_id" : 1001,
+    "description" : "manager" ,
     "email" : "ABC@gmail.com",
-    "enabled" : "true" ,
-    "image_url" : "ABC" ,
-    "name" : "John"
+    "image" : "ABC" ,
+    "name" : "John" ,
+    "phone" : 9876543210,
+    "second_name" : "Doe",
+    "work" : "Associate"
 }

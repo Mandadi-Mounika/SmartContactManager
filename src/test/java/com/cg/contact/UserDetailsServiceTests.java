@@ -1,12 +1,19 @@
 package com.cg.contact;
 
+import static org.mockito.Mockito.when;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.cg.contact.configure.UserDetailsService;
-
+import com.cg.contact.dao.ContactDAO;
 import com.cg.contact.dao.UserRepository;
 import com.cg.contact.entity.Contact;
 import com.cg.contact.entity.User;
