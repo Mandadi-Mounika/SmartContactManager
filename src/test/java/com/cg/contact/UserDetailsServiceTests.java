@@ -1,28 +1,39 @@
 package com.cg.contact;
 
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.cg.contact.configure.UserDetailsService;
+import com.cg.contact.controller.ContactController;
 import com.cg.contact.dao.ContactDAO;
 import com.cg.contact.dao.UserRepository;
 import com.cg.contact.entity.Contact;
 import com.cg.contact.entity.User;
+import com.cg.contact.service.ContactService;
 
 import junit.framework.Assert;
 
 class UserDetailsServiceTests<ContactList> {
 
 	private static final UserDetailsService UserDetailsService = null;
+
+	private static final String ContactService = null;
 
 	@Mock
 	UserRepository userRepository;
@@ -32,6 +43,11 @@ class UserDetailsServiceTests<ContactList> {
 
 	@SuppressWarnings("unused")
 	@Test
+	
+	 @BeforeEach
+	    public void setUp() {
+	        MockitoAnnotations.openMocks(this);
+	    }
 
 	public void testUserRegister() throws Exception {
 		// Create a UserService instance
@@ -111,5 +127,6 @@ class UserDetailsServiceTests<ContactList> {
 		// Assert
 		Assert.assertNull(result);
 	}
-	
+
+
 }
