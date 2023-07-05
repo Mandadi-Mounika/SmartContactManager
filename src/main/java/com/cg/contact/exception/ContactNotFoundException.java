@@ -11,4 +11,3 @@ public class ContactNotFoundException extends Exception {
 		super(message);
 	}
 }
-

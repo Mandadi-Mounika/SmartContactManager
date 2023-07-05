@@ -1,132 +1,140 @@
 package com.cg.contact;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Optional;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
-import com.cg.contact.configure.UserDetailsService;
-import com.cg.contact.controller.ContactController;
-import com.cg.contact.dao.ContactDAO;
+import com.cg.contact.dao.ContactRepository;
 import com.cg.contact.dao.UserRepository;
 import com.cg.contact.entity.Contact;
 import com.cg.contact.entity.User;
-import com.cg.contact.service.ContactService;
+import com.cg.contact.service.UserDetails;
+import com.cg.contact.service.UserDetailsService;
 
-import junit.framework.Assert;
-
-class UserDetailsServiceTests<ContactList> {
-
-	private static final UserDetailsService UserDetailsService = null;
-
-	private static final String ContactService = null;
+@RunWith(MockitoJUnitRunner.class)
+public class UserDetailsServiceTests {
 
 	@Mock
-	UserRepository userRepository;
+	private UserRepository userRepository;
+
+	@Mock
+	private ContactRepository contactRepository;
 
 	@InjectMocks
-	UserDetailsService userService;
+	private UserDetailsService userDetailsService;
 
-	@SuppressWarnings("unused")
-	@Test
-	
-	 @BeforeEach
-	    public void setUp() {
-	        MockitoAnnotations.openMocks(this);
-	    }
+	private User user;
+	private Contact contact;
 
-	public void testUserRegister() throws Exception {
-		// Create a UserService instance
-		UserDetailsService userService = (UserDetailsService);
+	@Before
+	public void setup() {
+		user = new User();
+		user.setId(0);
+		user.setEmail("test@example.com");
 
-		// Create a user object
-		User user = new User();
-
-		// Call the userRegister method
-		User registeredUser = userService.userRegister(user);
-
-		// Assert that the registeredUser is not null
-		Assertions.assertNotNull(registeredUser);
-
-		// Assert that the registeredUser has the same properties as the input user
-		Assertions.assertEquals(user.getName(), registeredUser.getName());
-		Assertions.assertEquals(user.getEmail(), registeredUser.getEmail());
-
-		// Assert that the registeredUser has been assigned an ID
-		Assertions.assertNotNull(registeredUser.getId());
-
-		// Assert any other necessary conditions for user registration
-
-		// For example, if the registered user should have an active status
-		Assertions.assertTrue(registeredUser.isActive1(), "User should be active.");
-
-		// If the user registration throws an exception, the test will fail
-	}
-	@Test
-	public void testAddContactInUser() throws Exception {
-		User user = new User(); // Create a user instance
-
-		// Test case 1: Adding a contact that doesn't exist in the user's contact list
-		User contact1 = new User(); // Create a contact instance
-		User result1 = user.addContactInUser1(contact1); // Add the contact to the user's contact list
-		Assertions.assertTrue(result1.getContacts().contains(contact1)); // Assert that the contact is added
-
-		// Test case 2: Adding a contact that already exists in the user's contact list
-		User contact2 = new User(); // Create another contact instance
-		user.addContactInUser1(contact2); // Add the contact to the user's contact list
-		User result2 = user.addContactInUser1(contact2); // Attempt to add the contact again
-		Assertions.assertEquals(user.getContacts().size(), result2.getContacts().size()); // Assert that the contact is
-																							// not duplicated
-
-		// Test case 3: Adding null contact
-		User result3 = user.addContactInUser1(null); // Add null contact to the user's contact list
-		Assertions.assertFalse(result3.getContacts().contains(null)); // Assert that null contact is not added
-
-		// Additional test cases can be added based on specific requirements or edge
-		// cases
-	}
-
-
-
-	@Test
-	public void testGetContactById_ExistingId_ReturnsContact() {
-		// Arrange
-		int contactId = 1;
-
-		UserDetailsService contactService = null;
-		// Act
-		Contact result = contactService.getContactById(contactId);
-
-		// Assert
-		Assert.assertNotNull(result);
-		Assert.assertEquals(contactId, result.getcId());
+		contact = new Contact();
+		contact.setcId(1);
+		contact.setName("John Doe");
+		contact.setUser(user);
 	}
 
 	@Test
-	public void testGetContactById_NonExistingId_ReturnsNull() {
-		// Arrange
-		int contactId = 2; // Assuming contact with ID 2 doesn't exist
+	public void testUserRegister_Success() throws Exception {
+		when(userRepository.save(any(User.class))).thenReturn(user);
 
-		UserDetailsService contactService = null;
-		Contact result = contactService.getContactById(contactId);
+		User result = userDetailsService.userRegister(user);
 
-		// Assert
-		Assert.assertNull(result);
+		assertNotNull(result);
+		assertEquals(user, result);
 	}
+
+	@Test(expected = Exception.class)
+    public void testUserRegister_Exception() throws Exception {
+        // Mock the userRepository.save() method to throw an exception
+        when(userRepository.save(any(User.class))).thenThrow(new Exception());
+        
+        // Call the method under test
+        userDetailsService.userRegister(user);
+        
+        // The exception is expected to be thrown during the method execution
+    }
+
+	@Test
+	public void testFindUserByEmail_Success() throws Exception {
+		when(userRepository.loadUserByUsername(user.getEmail())).thenReturn(user);
+
+		User result = userDetailsService.findUserByEmail(user.getEmail());
+
+		assertNotNull(result);
+		assertEquals(user, result);
+	}
+
+	@Test
+	public void testFindUserByEmail_NotFound() throws Exception {
+		when(userRepository.loadUserByUsername(user.getEmail())).thenReturn(null);
+
+		User result = userDetailsService.findUserByEmail(user.getEmail());
+
+		assertNull(result);
+	}
+
+	@Test
+	public void testAddContactInUser_Success() {
+		when(userRepository.save(any(User.class))).thenReturn(user);
+
+		User result = userDetailsService.addContactInUser(user);
+
+		assertNotNull(result);
+		assertEquals(user, result);
+	}
+
+	@Test
+	public void testGetContactById_Success() {
+		Optional<Contact> optionalContact = Optional.of(contact);
+		when(contactRepository.findById(contact.getcId()));
+	}
+
+    @Test
+    public void testGetContactsList() {
+        // Prepare test data
+        User user = new User();
+        user.setId(1);
+        Contact contact1 = new Contact();
+        contact1.setcId(1);
+        Contact contact2 = new Contact();
+        contact2.setcId(2);
+        Page<Contact> expectedPage = new PageImpl<>(List.of(contact1, contact2));
+
+        // Mock the repository method
+        when(contactRepository.getContactsByUser(1, org.springframework.data.domain.Pageable.unpaged())).thenReturn(expectedPage);
+
+        // Invoke the service method
+        Page<Contact> actualPage = userDetailsService.getContactsList(1, org.springframework.data.domain.Pageable.unpaged());
+
+        // Assert the result
+        assertEquals(expectedPage, actualPage);
+    }
+    
+
+  
+  
 
 
 }
+

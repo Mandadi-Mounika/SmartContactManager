@@ -1,6 +1,7 @@
 package com.cg.contact.service;
 
 import java.io.File;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -42,7 +43,7 @@ public class UserDetailsService {
 		}
 	}
 
-	public User findUserByEmail(String email) throws Exception{
+	public User findUserByEmail(String email) throws Exception {
 		try {
 			User resultUser = userRepository.loadUserByUsername(email);
 			return resultUser;
@@ -127,4 +128,5 @@ public class UserDetailsService {
 			return null; // Or throw a custom exception if desired
 		}
 	}
+
 }

@@ -49,39 +49,13 @@ public class contactServiceImpl implements ContactService {
 		}
 
 		return message;
-
-	}
-
-	public Contact getContactById(int contact_id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Contact> getContacts() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Contact addContacts(Contact contactDAO) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
-	public Contact updateContacts(Contact contact) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Contact getContactByid(int id) throws ContactNotFoundException {
+		return contactDAO.findById(id)
+				.orElseThrow(() -> new ContactNotFoundException("No contact present with id : " + id));
 
-	@Override
-	public void deleteContactById(int contact_Id) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public List<Contact> getcontacts() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.cg.contact.configure;
+package com.cg.contact.service;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import com.cg.contact.entity.Contact;
 import com.cg.contact.entity.User;
 
 @Service
-public interface UserDetailsService {
+public interface UserDetails {
 
 	<SimpleGrantedAuthority> List<SimpleGrantedAuthority> getAuthorities();
 
@@ -34,5 +34,4 @@ public interface UserDetailsService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

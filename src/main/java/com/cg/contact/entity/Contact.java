@@ -7,13 +7,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
 @Entity
-@Table(name="contact1")
+@Table(name = "contact1")
 public class Contact {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int cId;
 	private String name;
 	private String secondName;
@@ -24,9 +23,7 @@ public class Contact {
 	private String description;
 	@ManyToOne
 	private User user;
-	
-	
-	
+
 	public Contact(int cId, String name, String secondName, String work, String email, String image, String phone,
 			String description, User user) {
 		super();
@@ -42,7 +39,6 @@ public class Contact {
 	}
 
 	public Contact() {
-		
 	}
 
 	public int getcId() {
@@ -117,17 +113,12 @@ public class Contact {
 		this.user = user;
 	}
 
-	
 	@Override
 	public String toString() {
 		return "Contact [cId=" + cId + ", name=" + name + ", secondName=" + secondName + ", work=" + work + ", email="
 				+ email + ", image=" + image + ", description=" + description + ", phone=" + phone + ", user=" + user
 				+ "]";
-	}	
-	
-	@Override
-	public boolean equals(Object obj) {
-		return this.cId == ((Contact)obj).getcId();
 	}
+
 }
 	

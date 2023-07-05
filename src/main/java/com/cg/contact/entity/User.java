@@ -2,7 +2,7 @@ package com.cg.contact.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BooleanSupplier;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -14,11 +14,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="user1")
+@Table(name = "user1")
 public class User {
-	
+
 	@Id
-	@GeneratedValue(strategy =GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	private String name;
 	private String email;
@@ -27,12 +27,10 @@ public class User {
 	private String about;
 	private String role;
 	private boolean enabled;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
 	private List<Contact> contacts = new ArrayList<>();
-	
-	
-	
+
 	public User(int id, String name, String email, String password, String imageUrl, String about, String role,
 			boolean enabled, List<Contact> contacts) {
 		super();
@@ -50,7 +48,6 @@ public class User {
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
-
 
 	public int getId() {
 		return id;
@@ -123,7 +120,6 @@ public class User {
 	public void setContacts(List<Contact> contacts) {
 		this.contacts = contacts;
 	}
-	
 
 	@Override
 	public String toString() {
@@ -131,22 +127,24 @@ public class User {
 				+ id + ", imageUrl=" + imageUrl + ", name=" + name + ", password=" + password + ", role=" + role + "]";
 	}
 
-	public BooleanSupplier isActive1() {
-		// TODO Auto-generated method stub
-		return null;
+	@Override
+	public int hashCode() {
+		return Objects.hash(about, contacts, email, enabled, id, imageUrl, name, password, role);
 	}
 
-	public User addContactInUser1(User contact1) {
-		return contact1;
-		// TODO Auto-generated method stub
-		
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(about, other.about) && Objects.equals(contacts, other.contacts)
+				&& Objects.equals(email, other.email) && enabled == other.enabled && id == other.id
+				&& Objects.equals(imageUrl, other.imageUrl) && Objects.equals(name, other.name)
+				&& Objects.equals(password, other.password) && Objects.equals(role, other.role);
 	}
 
-	public String getContact1() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-	
 }
