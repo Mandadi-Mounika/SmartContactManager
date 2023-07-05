@@ -10,12 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 public class SmartContactManager1ApplicationTests {
 
-    // @Test
-    // public void contextLoads() {
-    //     // Verify that the Spring Boot application context is loaded successfully
-    //     SmartContactManager1Application.main(new String[]{});
-    //     assertTrue(true); // Dummy assertion to ensure the application runs without any exceptions
-    // }
+    
 
     @Test
     public void swaggerConfigurationEnabled() {
